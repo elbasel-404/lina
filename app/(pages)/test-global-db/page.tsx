@@ -1,26 +1,24 @@
-import { get } from "@/app/server/get";
-import { set } from "@/app/server/set";
+import { Get } from "@/app/components/Get";
+import { Set } from "@/app/components/Set";
+// import { get } from "@/app/db/get";
+// import { set } from "@/app/db/set";
 
 const TestGlobalDBPage = async () => {
-  const userName = await get<string>("userName");
+  //   const userName = await get<string>("userName");
   return (
-    <div>
-      <div>
+    <main>
+      <section>
         <h1>Test Global DB Page</h1>
-        <p>username: {userName}</p>
-      </div>
-      <div>
-        <form
-          action={async (formData: FormData) => {
-            "use server";
-            set("userName", formData.get("userName")?.toString());
-          }}
-        >
+        {/* <p>username: {userName}</p> */}
+        <Get key="userName" />
+      </section>
+      <section>
+        <Set>
           <input type="text" name="userName" />
           <button type="submit">Set Username</button>
-        </form>
-      </div>
-    </div>
+        </Set>
+      </section>
+    </main>
   );
 };
 

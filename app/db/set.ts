@@ -2,14 +2,6 @@
 
 import { updateTag } from "next/cache";
 
-// import { cacheTag } from "next/cache";
-
-declare global {
-  interface GlobalThis {
-    __globalDB?: Map<string, any>;
-  }
-}
-
 const globalAny = globalThis as any;
 
 const db = (globalAny.__globalDB ||= new Map<string, any>());
