@@ -1,6 +1,7 @@
 "use client";
 
 import { run } from "./run";
+import { SimpleStream } from "./SimpleStream";
 import { StreamRunner } from "./StreamRunner";
 
 export const Run = () => {
@@ -12,7 +13,8 @@ export const Run = () => {
       </form>
       <div style={{ marginTop: 16 }}>
         <h3>Streaming (polling fallback)</h3>
-        <StreamRunner />
+        {/* <StreamRunner /> */}
+        <SimpleStream />
       </div>
     </div>
   );
