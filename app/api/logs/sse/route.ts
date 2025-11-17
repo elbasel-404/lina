@@ -1,4 +1,3 @@
-import { NextResponse } from "next/server";
 import { getLogsSince } from "@/app/log";
 
 export async function GET(req: Request) {
@@ -10,7 +9,7 @@ export async function GET(req: Request) {
       let index = since;
 
       while (true) {
-        const next = getLogsSince(index);
+        const next = await getLogsSince(index);
         if (next.length > 0) {
           for (const entry of next) {
             const event = `data: ${JSON.stringify(entry)}\n\n`;

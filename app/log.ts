@@ -1,3 +1,4 @@
+"use server";
 type LogEntry = {
   id: string;
   timestamp: string;
@@ -10,7 +11,7 @@ const logs: LogEntry[] = globalAny.__lina_logs;
 
 import { v4 as uuidv4 } from "uuid";
 
-export function log(text: string) {
+export async function log(text: string) {
   const entry: LogEntry = {
     id: uuidv4(),
     timestamp: new Date().toISOString(),
@@ -20,15 +21,14 @@ export function log(text: string) {
   return entry;
 }
 
-export function getLogs() {
+export async function getLogs() {
   return logs.slice();
 }
 
-// Helper used by the streaming API - returns logs starting at index
-export function getLogsSince(index: number) {
+export async function getLogsSince(index: number) {
   return logs.slice(index);
 }
 
-export function clearLogs() {
+export async function clearLogs() {
   logs.length = 0;
 }
