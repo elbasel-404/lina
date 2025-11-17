@@ -1,23 +1,14 @@
 "use client";
-import { useRef, useState } from "react";
+
+import { useState } from "react";
 
 export function SimpleStream() {
   const [output, setOutput] = useState("");
 
-  // Keep controller in ref so it persists across renders but doesn't cause re-renders
-  const controllerRef = useRef<AbortController | null>(null);
-
   const start = async () => {
-    setOutput("");
-    const ctrl = new AbortController();
-    controllerRef.current = ctrl;
-
-    // try {
-    const res = await fetch("/api/test", {
+    const res = await fetch("/api/simple-stream", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ prompt }),
-      signal: ctrl.signal,
     });
 
     if (!res.body) {
@@ -38,11 +29,8 @@ export function SimpleStream() {
 
   return (
     <div>
+      <pre>{output}</pre>
       <button onClick={start}>Start Stream</button>
-
-      <div>
-        <pre>{output}</pre>
-      </div>
     </div>
   );
 }
