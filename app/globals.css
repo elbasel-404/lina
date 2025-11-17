@@ -1,14 +1,23 @@
 @import "tailwindcss";
 
-body {
-  background-color: black;
-  color: white;
-  padding: 1rem;
-  @apply space-y-8;
-}
+@layer base {
+  main {
+    @apply space-y-4;
+  }
 
-input {
-  display: block;
-  color: white;
-  border: 1px solid white;
+  body {
+    @apply bg-black text-white font-mono p-4;
+  }
+
+  input {
+    @apply border border-gray-600 p-2 rounded;
+  }
+
+  button {
+    @apply text-white px-4 py-2 rounded border border-white;
+  }
+
+  button:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
 }
