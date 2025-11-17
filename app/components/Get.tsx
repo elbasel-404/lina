@@ -1,7 +1,8 @@
 import { get } from "../db/get";
+import { DBKey } from "../db/keys";
 
 interface GetProps {
-  dbKey: string;
+  dbKey: DBKey;
   label?: string;
 }
 
