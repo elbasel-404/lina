@@ -1,4 +1,5 @@
 "use server";
+
 type LogEntry = {
   id: string;
   timestamp: string;

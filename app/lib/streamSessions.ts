@@ -1,5 +1,5 @@
-import { ensureLinaStreamSessionStore } from "@/app/lib/globalStore";
+import { db } from "@/app/lib/globalStore";
 
-export const streamSessions = ensureLinaStreamSessionStore<
+export const streamSessions = db.ensure<
   Map<string, { chunks: string[]; finished: boolean }>
->(() => new Map());
+>("streamSessions", () => new Map());

@@ -3,11 +3,7 @@ import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 
 // In-memory streaming sessions - for demo and local development only
-import { ensureLinaStreamSessionStore } from "@/app/lib/globalStore";
-
-const streamSessions = ensureLinaStreamSessionStore<
-  Map<string, { chunks: string[]; finished: boolean }>
->(() => new Map());
+import { streamSessions } from "@/app/lib/streamSessions";
 
 async function produceStream(id: string, prompt?: string) {
   const session = streamSessions.get(id);

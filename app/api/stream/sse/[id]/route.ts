@@ -1,10 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { ensureLinaStreamSessionStore } from "@/app/lib/globalStore";
-
-const streamSessions = ensureLinaStreamSessionStore<
-  Map<string, { chunks: string[]; finished: boolean }>
->(() => new Map());
+import { streamSessions } from "@/app/lib/streamSessions";
 
 export async function GET(req: Request) {
   const url = new URL(req.url);

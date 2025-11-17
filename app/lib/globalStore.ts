@@ -39,3 +39,36 @@ export function ensureLinaStreamSessionStore<T extends Map<any, any>>(
 ) {
   return ensureGlobal<T>(LINA_KEYS.STREAM_SESSIONS, init);
 }
+
+// Simple key/value database stored on globalThis under a single map
+const DB_KEY = "__lina_db";
+
+function getDbMap(): Map<string, any> {
+  return ensureGlobal<Map<string, any>>(DB_KEY, () => new Map());
+}
+
+export const db = {
+  get<T>(key: string): T | undefined {
+    return getDbMap().get(key) as T | undefined;
+  },
+  set<T>(key: string, value: T): T {
+    getDbMap().set(key, value);
+    return value;
+  },
+  has(key: string) {
+    return getDbMap().has(key);
+  },
+  delete(key: string) {
+    return getDbMap().delete(key);
+  },
+  ensure<T>(key: string, init: () => T): T {
+    const m = getDbMap();
+    if (!m.has(key)) {
+      m.set(key, init());
+    }
+    return m.get(key) as T;
+  },
+  keys(): string[] {
+    return Array.from(getDbMap().keys());
+  },
+};
