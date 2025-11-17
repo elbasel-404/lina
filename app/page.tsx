@@ -1,9 +1,12 @@
-import { SimpleStream } from "./SimpleStream";
+// import { SimpleStream } from "./SimpleStream";
+import { Log } from "./Log";
+import { Run as RunComponent } from "./Run";
 
 export default function Home() {
   return (
     <main>
-      <SimpleStream />
+      <Log />
+      <RunComponent />
     </main>
   );
 }
