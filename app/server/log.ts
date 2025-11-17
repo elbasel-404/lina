@@ -5,9 +5,14 @@ type LogEntry = {
   text: string;
 };
 
-const globalAny = globalThis as any;
-globalAny.__lina_logs ||= [] as LogEntry[];
-const logs: LogEntry[] = globalAny.__lina_logs;
+import {
+  ensureLinaLogs,
+  setGlobal,
+  LINA_KEYS,
+  getGlobal,
+} from "@/app/lib/globalStore";
+
+const logs = ensureLinaLogs<LogEntry[]>(() => []);
 
 import { v4 as uuidv4 } from "uuid";
 
@@ -32,6 +37,7 @@ export async function getLogsSince(index: number) {
 export async function clearLogs() {
   logs.length = 0;
   // bump a version marker so SSE connections know logs were cleared
-  const globalAny = globalThis as any;
-  globalAny.__lina_logs_version = (globalAny.__lina_logs_version ?? 0) + 1;
+  // bump a global version marker so SSE connections know logs were cleared
+  const current = (getGlobal<number>(LINA_KEYS.LOGS_VERSION) ?? 0) + 1;
+  setGlobal<number>(LINA_KEYS.LOGS_VERSION, current);
 }

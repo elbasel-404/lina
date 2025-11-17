@@ -20,4 +20,8 @@
   button:disabled {
     @apply opacity-50 cursor-not-allowed;
   }
+
+  button:disabled::after {
+    @apply content-["(disabled)"];
+  }
 }

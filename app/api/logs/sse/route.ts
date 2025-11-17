@@ -1,4 +1,5 @@
 import { getLogsSince } from "@/app/server/log";
+import { getGlobal, LINA_KEYS } from "@/app/lib/globalStore";
 
 export async function GET(req: Request) {
   const url = new URL(req.url);
@@ -7,8 +8,8 @@ export async function GET(req: Request) {
   const stream = new ReadableStream({
     async pull(controller) {
       let index = since;
-      const globalAny = globalThis as any;
-      let lastVersion = globalAny.__lina_logs_version ?? 0;
+      // Read the current logs version from a central global helper
+      let lastVersion = getGlobal<number>(LINA_KEYS.LOGS_VERSION) ?? 0;
 
       while (true) {
         const next = await getLogsSince(index);
@@ -21,7 +22,7 @@ export async function GET(req: Request) {
         }
 
         // If logs were cleared, emit a `clear` event so clients can reset
-        const newVersion = globalAny.__lina_logs_version ?? 0;
+        const newVersion = getGlobal<number>(LINA_KEYS.LOGS_VERSION) ?? 0;
         if (newVersion > lastVersion) {
           const event = `event: clear\ndata: ${JSON.stringify({
             version: newVersion,

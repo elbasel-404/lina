@@ -2,11 +2,11 @@ import { NextResponse } from "next/server";
 
 // Must match the same memory store used by start
 // If started in a separate function invocation (serverless) this will not persist!
-const streamSessions: Map<string, { chunks: string[]; finished: boolean }> =
-  (global as any).__lina_streamSessions || new Map();
-if (!(global as any).__lina_streamSessions) {
-  (global as any).__lina_streamSessions = streamSessions;
-}
+import { ensureLinaStreamSessionStore } from "@/app/lib/globalStore";
+
+const streamSessions = ensureLinaStreamSessionStore<
+  Map<string, { chunks: string[]; finished: boolean }>
+>(() => new Map());
 
 export async function GET(req: Request) {
   const url = new URL(req.url);

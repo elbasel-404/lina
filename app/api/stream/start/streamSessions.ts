@@ -1,6 +1,1 @@
-// In-memory streaming sessions - for demo and local development only
-
-export const streamSessions: Map<
-  string,
-  { chunks: string[]; finished: boolean }
-> = (global as any).__lina_streamSessions || new Map();
+export { streamSessions } from "@/app/lib/streamSessions";

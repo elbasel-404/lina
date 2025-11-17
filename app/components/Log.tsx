@@ -41,8 +41,10 @@ export function Log() {
   return (
     <div className="border border-white rounded-lg p-2">
       {entries.map(({ id, text, timestamp }) => (
-        <div key={id}>
-          <span>{new Date(timestamp).toLocaleTimeString()}</span>
+        <div key={id} className="not-last:border-b border-white p-2 flex gap-2">
+          <span className="italic text-amber-400">
+            {timestamp.slice(11, 16)}
+          </span>
           <div>{text}</div>
         </div>
       ))}
