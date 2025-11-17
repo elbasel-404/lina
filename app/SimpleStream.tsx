@@ -1,13 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { Endpoints } from "./endpoints";
+import { ENDPOINTS } from "./endpoints";
 
 export function SimpleStream() {
   const [output, setOutput] = useState("");
 
   const start = async () => {
-    const res = await fetch(Endpoints["API_SIMPLE-STREAM"], {
+    const res = await fetch(ENDPOINTS.simpleStream, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
     });
@@ -30,8 +30,8 @@ export function SimpleStream() {
 
   return (
     <div>
-      <pre>{output}</pre>
       <button onClick={start}>Start Stream</button>
+      <pre>{output}</pre>
     </div>
   );
 }
