@@ -1,5 +1,5 @@
 import { formatError } from "zod";
-import { log } from "../server/log";
+import { log } from "../../server/log";
 import { KEYS } from "./keys";
 
 export const validateKey = (key: string) => {

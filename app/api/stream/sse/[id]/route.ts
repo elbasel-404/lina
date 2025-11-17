@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { streamSessions } from "@/app/lib/streamSessions";
+import { streamSessions } from "@/app/db/streaming/streamSessions";
 
 export async function GET(req: Request) {
   const url = new URL(req.url);

@@ -1,21 +1,20 @@
 "use server";
 
+import { v4 as uuidv4 } from "uuid";
+import {
+  ensureGlobalLogs,
+  getGlobal,
+  GLOBAL_LOGS_KEYS,
+  setGlobal,
+} from "../db/streaming";
+
 type LogEntry = {
   id: string;
   timestamp: string;
   text: string;
 };
 
-import {
-  ensureLinaLogs,
-  setGlobal,
-  LINA_KEYS,
-  getGlobal,
-} from "@/app/lib/globalStore";
-
-const logs = ensureLinaLogs<LogEntry[]>(() => []);
-
-import { v4 as uuidv4 } from "uuid";
+const logs = ensureGlobalLogs<LogEntry[]>(() => []);
 
 export async function log(text: string) {
   const entry: LogEntry = {
@@ -39,6 +38,6 @@ export async function clearLogs() {
   logs.length = 0;
   // bump a version marker so SSE connections know logs were cleared
   // bump a global version marker so SSE connections know logs were cleared
-  const current = (getGlobal<number>(LINA_KEYS.LOGS_VERSION) ?? 0) + 1;
-  setGlobal<number>(LINA_KEYS.LOGS_VERSION, current);
+  const current = (getGlobal<number>(GLOBAL_LOGS_KEYS.LOGS_VERSION) ?? 0) + 1;
+  setGlobal<number>(GLOBAL_LOGS_KEYS.LOGS_VERSION, current);
 }

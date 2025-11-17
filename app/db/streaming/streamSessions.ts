@@ -1,4 +1,4 @@
-import { db } from "@/app/lib/globalStore";
+import { db } from ".";
 
 export const streamSessions = db.ensure<
   Map<string, { chunks: string[]; finished: boolean }>

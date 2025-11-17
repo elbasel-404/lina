@@ -1,6 +1,6 @@
 import { type ReactNode } from "react";
-import { set } from "@/app/db/set";
-import { KEYS } from "../db/keys";
+import { set } from "@/app/db/revalidation/set";
+import { KEYS } from "../db/revalidation/keys";
 
 interface SetProps {
   children?: ReactNode;

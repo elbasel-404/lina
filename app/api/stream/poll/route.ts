@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 // Must match the same memory store used by start
 // If started in a separate function invocation (serverless) this will not persist!
-import { streamSessions } from "@/app/lib/streamSessions";
+import { streamSessions } from "@/app/db/streaming/streamSessions";
 
 export async function GET(req: Request) {
   const url = new URL(req.url);

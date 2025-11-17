@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 
 // In-memory streaming sessions - for demo and local development only
-import { streamSessions } from "@/app/lib/streamSessions";
+import { streamSessions } from "@/app/db/streaming/streamSessions";
 
 async function produceStream(id: string, prompt?: string) {
   const session = streamSessions.get(id);

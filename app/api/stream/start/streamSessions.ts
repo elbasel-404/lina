@@ -1,1 +1,1 @@
-export { streamSessions } from "@/app/lib/streamSessions";
+export { streamSessions } from "@/app/db/streaming/streamSessions";

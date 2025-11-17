@@ -1,47 +1,46 @@
+import { globalAny } from "../globalAny";
+
 export function getGlobal<T>(key: string): T | undefined {
-  const globalAny = globalThis as any;
   return globalAny[key] as T | undefined;
 }
 
 export function setGlobal<T>(key: string, value: T): T {
-  const globalAny = globalThis as any;
   globalAny[key] = value;
   return value;
 }
 
 export function ensureGlobal<T>(key: string, init: () => T): T {
-  const globalAny = globalThis as any;
   if (typeof globalAny[key] === "undefined") {
     globalAny[key] = init();
   }
   return globalAny[key] as T;
 }
 
-// Convenience typed helpers for common keys used in this app
-export const LINA_KEYS = {
-  LOGS: "__lina_logs",
-  LOGS_VERSION: "__lina_logs_version",
-  STREAM_SESSIONS: "__lina_streamSessions",
+export const GLOBAL_LOGS_KEYS = {
+  LOGS: "__global_logs",
+  LOGS_VERSION: "__global_logs_version",
+  STREAM_SESSIONS: "__global_streamSessions",
 } as const;
 
-export type LinaKeys = (typeof LINA_KEYS)[keyof typeof LINA_KEYS];
+export type GlobalLogKey =
+  (typeof GLOBAL_LOGS_KEYS)[keyof typeof GLOBAL_LOGS_KEYS];
 
-export function ensureLinaLogs<T extends any[]>(init: () => T) {
-  return ensureGlobal<T>(LINA_KEYS.LOGS, init);
+export function ensureGlobalLogs<T extends any[]>(init: () => T) {
+  return ensureGlobal<T>(GLOBAL_LOGS_KEYS.LOGS, init);
 }
 
-export function ensureLinaLogsVersion(init: () => number) {
-  return ensureGlobal<number>(LINA_KEYS.LOGS_VERSION, init);
+export function ensureGlobalLogsVersion(init: () => number) {
+  return ensureGlobal<number>(GLOBAL_LOGS_KEYS.LOGS_VERSION, init);
 }
 
-export function ensureLinaStreamSessionStore<T extends Map<any, any>>(
+export function ensureGlobalStreamSessionStore<T extends Map<any, any>>(
   init: () => T
 ) {
-  return ensureGlobal<T>(LINA_KEYS.STREAM_SESSIONS, init);
+  return ensureGlobal<T>(GLOBAL_LOGS_KEYS.STREAM_SESSIONS, init);
 }
 
 // Simple key/value database stored on globalThis under a single map
-const DB_KEY = "__lina_db";
+const DB_KEY = "__global_db";
 
 function getDbMap(): Map<string, any> {
   return ensureGlobal<Map<string, any>>(DB_KEY, () => new Map());

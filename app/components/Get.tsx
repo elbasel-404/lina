@@ -1,5 +1,5 @@
-import { get } from "../db/get";
-import { DBKey } from "../db/keys";
+import { get } from "../db/revalidation/get";
+import { DBKey } from "../db/revalidation/keys";
 
 interface GetProps {
   dbKey: DBKey;

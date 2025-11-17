@@ -1,7 +1,7 @@
 "use server";
 import { cacheTag } from "next/cache";
-import { DBKey } from "./keys";
 import { db } from ".";
+import { DBKey } from "./keys";
 
 export const get = async <T>(key: DBKey) => {
   "use cache";
