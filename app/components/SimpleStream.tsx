@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ENDPOINTS } from "./endpoints";
+import { ENDPOINTS } from "../lib/endpoints";
 
 export function SimpleStream() {
   const [output, setOutput] = useState("");
