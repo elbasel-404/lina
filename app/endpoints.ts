@@ -24,7 +24,14 @@ type RouteEnumMap = {
   [R in RouteUnion as RouteKey<R>]: R;
 };
 
-export const Endpoints = {} as RouteEnumMap;
+export const Endpoints = {
+  API_SIMPLE_STREAM: "/api/simple-stream",
+  "API_SIMPLE-STREAM": "/api/simple-stream",
+  API_STREAM_POLL: "/api/stream-poll",
+  "API_STREAM-POLL": "/api/stream-poll",
+  API_STREAM_START: "/api/stream-start",
+  ROOT: "/",
+} as RouteEnumMap;
 
 export type EndpointKey = keyof typeof Endpoints;
 export type EndpointValue = (typeof Endpoints)[EndpointKey];

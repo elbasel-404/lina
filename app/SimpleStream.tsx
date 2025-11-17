@@ -1,12 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { Endpoints } from "./endpoints";
 
 export function SimpleStream() {
   const [output, setOutput] = useState("");
 
   const start = async () => {
-    const res = await fetch("/api/simple-stream", {
+    const res = await fetch(Endpoints["API_SIMPLE-STREAM"], {
       method: "POST",
       headers: { "Content-Type": "application/json" },
     });
