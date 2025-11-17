@@ -1,26 +1,31 @@
+import { sleep } from "@/app/sleep";
 import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
-import { sleep } from "./sleep";
 
 // In-memory streaming sessions - for demo and local development only
-const streamSessions: Map<string, { chunks: string[]; finished: boolean }> =
-  (global as any).__lina_streamSessions || new Map();
-if (!(global as any).__lina_streamSessions) {
-  (global as any).__lina_streamSessions = streamSessions;
-}
+const globalAny = globalThis as any;
+
+globalAny.__lina_streamSessions ||= new Map<
+  string,
+  { chunks: string[]; finished: boolean }
+>();
+const streamSessions = globalAny.__lina_streamSessions as Map<
+  string,
+  { chunks: string[]; finished: boolean }
+>;
 
 async function produceStream(id: string, prompt?: string) {
   const session = streamSessions.get(id);
   if (!session) return;
 
-  const encoder = new TextEncoder();
+  //   const encoder = new TextEncoder();
 
   // Simulate streaming by periodically pushing chunks
   const defaultChunks = [
-    `Starting streaming for prompt: ${prompt ?? "(no prompt)"}`,
-    "Thinking and computing...",
-    "Composing response piece 1",
-    "Composing response piece 2",
+    `Starting streaming for prompt: ${prompt ?? "(no prompt)"}\n`,
+    "Thinking and computing...\n",
+    "Composing response piece 1\n",
+    "Composing response piece 2\n",
     "Finalizing and done",
   ];
 
