@@ -1,12 +1,13 @@
 "use client";
 
-import { useActionState, useEffect, startTransition } from "react";
+import { useActionState, useEffect, startTransition, useRef } from "react";
 import { getState } from "./getState";
 import { setState } from "./setCookie";
 
 export const Log = () => {
+  const counter = useRef(0);
   const [state, formAction] = useActionState(getState, {
-    state: "init",
+    state: "pre-init",
     // counter: 0,
     // error: null,
     // formData: {},
@@ -14,8 +15,9 @@ export const Log = () => {
 
   useEffect(() => {
     const id = setInterval(() => {
-      console.log("running...");
+      console.log("running..." + counter.current);
       startTransition(() => {
+        counter.current += 1;
         formAction();
       });
     }, 1000);
