@@ -1,7 +1,7 @@
 "use client";
 
 import { useTransition } from "react";
-import { run } from "./run";
+import { run } from "../server/run";
 
 export const Run = () => {
   const [isPending, startTransition] = useTransition();
@@ -17,7 +17,7 @@ export const Run = () => {
   return (
     <form onSubmit={handleSubmit}>
       <button type="submit" disabled={isPending} aria-busy={isPending}>
-        {isPending ? "Running..." : "Run"}
+        Run
       </button>
     </form>
   );

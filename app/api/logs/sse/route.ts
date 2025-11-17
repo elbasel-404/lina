@@ -1,4 +1,4 @@
-import { getLogsSince } from "@/app/log";
+import { getLogsSince } from "@/app/server/log";
 
 export async function GET(req: Request) {
   const url = new URL(req.url);

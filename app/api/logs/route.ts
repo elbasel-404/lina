@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getLogs } from "@/app/log";
+import { getLogs } from "@/app/server/log";
 
 export async function GET() {
   const body = getLogs();

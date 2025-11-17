@@ -1,7 +1,7 @@
 "use client";
 
 import { type FormEvent, useTransition } from "react";
-import { clearLogs } from "./log";
+import { clearLogs } from "../server/log";
 
 export const ClearLogs = () => {
   const [isPending, startTransition] = useTransition();

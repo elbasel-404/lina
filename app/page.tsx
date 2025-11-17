@@ -1,7 +1,7 @@
 // import { SimpleStream } from "./SimpleStream";
-import { ClearLogs } from "./ClearLogs";
-import { Log } from "./Log";
-import { Run } from "./Run";
+import { ClearLogs } from "./components/ClearLogs";
+import { Log } from "./components/Log";
+import { Run } from "./components/Run";
 
 export default function Home() {
   return (

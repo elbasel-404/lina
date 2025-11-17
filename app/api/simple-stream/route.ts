@@ -1,4 +1,4 @@
-import { sleep } from "@/app/sleep";
+import { sleep } from "@/app/util/sleep";
 
 export async function POST(request: Request) {
   const chunks = ["one", "two", "three", "four", "five"];
