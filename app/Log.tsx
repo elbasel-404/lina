@@ -27,6 +27,11 @@ export function Log() {
       // EventSource automatically reconnects, so we just leave it
     };
 
+    // listen for the special "clear" event so we can empty local state
+    src.addEventListener("clear", () => {
+      setEntries([]);
+    });
+
     return () => {
       src.close();
       esRef.current = null;
@@ -34,20 +39,13 @@ export function Log() {
   }, []);
 
   return (
-    <div>
-      <h3>Server Logs</h3>
-      <div
-        style={{ maxHeight: 240, overflow: "auto", border: "1px solid #ccc" }}
-      >
-        {entries.map((e) => (
-          <div key={e.id} style={{ padding: 6, fontFamily: "monospace" }}>
-            <small style={{ color: "#666" }}>
-              {new Date(e.timestamp).toLocaleTimeString()}
-            </small>
-            <div>{e.text}</div>
-          </div>
-        ))}
-      </div>
+    <div className="border border-white rounded-lg p-2">
+      {entries.map(({ id, text, timestamp }) => (
+        <div key={id}>
+          <span>{new Date(timestamp).toLocaleTimeString()}</span>
+          <div>{text}</div>
+        </div>
+      ))}
     </div>
   );
 }

@@ -31,4 +31,7 @@ export async function getLogsSince(index: number) {
 
 export async function clearLogs() {
   logs.length = 0;
+  // bump a version marker so SSE connections know logs were cleared
+  const globalAny = globalThis as any;
+  globalAny.__lina_logs_version = (globalAny.__lina_logs_version ?? 0) + 1;
 }
