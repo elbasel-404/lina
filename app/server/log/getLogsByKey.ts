@@ -1,7 +1,7 @@
-import { get } from "@db";
+import { findOne } from "@db";
 import { LogKey, LogEntry } from "@types";
 
 export function getLogsByKey({ logKey }: { logKey: LogKey }) {
-  const logs = get<LogEntry[]>({ key: logKey });
+  const logs = findOne<LogEntry[]>(logKey);
   return logs || [];
 }

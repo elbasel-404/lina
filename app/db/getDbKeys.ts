@@ -1,6 +1,8 @@
 // "use server";
-import { db } from "@db";
+import { keys } from "./keys";
 
 export const getDbKeys = () => {
-  return Array.from(db.keys());
+  return keys();
 };
+
+export default getDbKeys;

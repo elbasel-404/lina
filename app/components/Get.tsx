@@ -1,4 +1,4 @@
-import { get } from "@db";
+import { findOne } from "@db";
 import { DBKey } from "@types";
 
 interface GetProps {
@@ -7,7 +7,7 @@ interface GetProps {
 }
 
 export const Get = async ({ dbKey, label }: GetProps) => {
-  const value = await get<string>({ key: dbKey });
+  const value = findOne<string>(dbKey);
   return (
     <>
       {label}

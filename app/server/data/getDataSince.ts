@@ -1,5 +1,5 @@
 "use server";
-import { get } from "@db";
+import { findOne } from "@db";
 import { DBKey } from "@types";
 
 export type GetDataSinceParams = {
@@ -7,6 +7,6 @@ export type GetDataSinceParams = {
   index: number;
 };
 export async function getDataSince({ key, index }: GetDataSinceParams) {
-  const items = get<any[]>({ key });
+  const items = findOne<any[]>(key);
   return items?.slice(index);
 }

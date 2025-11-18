@@ -1,7 +1,7 @@
 // "use server";
 
 import { nanoid } from "nanoid";
-import { set } from "@db";
+import { create } from "@db";
 import { getLogs } from "@server";
 import { LogKey } from "@types";
 
@@ -21,9 +21,9 @@ export async function log({ logKey, text }: LogParams) {
 
   if (logs) {
     logs.push(entry);
-    set(logKey, logs);
+    await create(logKey, logs);
   } else {
-    set(logKey, [entry]);
+    await create(logKey, [entry]);
   }
   return entry;
 }

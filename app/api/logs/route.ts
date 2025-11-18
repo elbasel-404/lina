@@ -1,6 +1,6 @@
 import { getDataSince } from "@server";
 import type { DBKey } from "@types";
-import { db } from "@db";
+import { findOne } from "@db";
 import { sleep } from "@util";
 // DBKey type is imported above for use when reading the `key` query param.
 
@@ -28,7 +28,8 @@ export async function GET(req: Request) {
       //   let lastVersion = getGlobal<number>(GLOBAL_LOGS_KEYS.LOGS_VERSION) ?? 0;
 
       const versionKey = `${key}:version`;
-      let lastVersion = (db.get(versionKey as any) as number | undefined) ?? 0;
+      let lastVersion =
+        (findOne<number>(versionKey as any) as number | undefined) ?? 0;
 
       while (true) {
         if (signal?.aborted) {
@@ -64,7 +65,7 @@ export async function GET(req: Request) {
         // so clients can selectively reset only feeds they care about.
         const versionKey = `${key}:version`;
         const newVersion =
-          (db.get(versionKey as any) as number | undefined) ?? 0;
+          (findOne<number>(versionKey as any) as number | undefined) ?? 0;
         if (newVersion > lastVersion) {
           // include the cleared log key so clients can ignore clears for other
           // keys when they're subscribed to a different channel

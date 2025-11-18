@@ -1,7 +1,7 @@
 import { cva } from "@util";
 
 export const toggle = cva({
-  base: "relative inline-flex flex-shrink-0 items-center h-6 w-11 rounded-full cursor-pointer transition-colors duration-200",
+  base: "relative inline-flex shrink-0 items-center h-6 w-11 rounded-full cursor-pointer transition-colors duration-200",
   variants: {
     checked: {
       true: "bg-green-500",

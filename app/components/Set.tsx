@@ -1,5 +1,5 @@
 import { type ReactNode } from "react";
-import { validateKey, set } from "@db";
+import { create, validateKey } from "@db";
 
 interface SetProps {
   children?: ReactNode;
@@ -13,7 +13,7 @@ export const Set = ({ children }: SetProps) => {
 
     for (const [formKey, formValue] of formEntries) {
       const { data } = await validateKey(formKey);
-      await set(data, formValue);
+      await create(data, formValue);
     }
   };
 
