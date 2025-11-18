@@ -1,4 +1,5 @@
 import { getLogsSince } from "@server";
+import { db } from "@db";
 import { sleep } from "@util";
 
 export async function GET(req: Request) {
@@ -18,6 +19,8 @@ export async function GET(req: Request) {
       // Read the current logs version from a central global helper
       //   let lastVersion = getGlobal<number>(GLOBAL_LOGS_KEYS.LOGS_VERSION) ?? 0;
 
+      let lastVersion = (db.get("logsVersion") as number | undefined) ?? 0;
+
       while (true) {
         if (signal?.aborted) {
           try {
@@ -27,10 +30,11 @@ export async function GET(req: Request) {
           }
           break;
         }
-        const next = (await getLogsSince({
-          logKey: "default",
-          index,
-        })) ?? [];
+        const next =
+          (await getLogsSince({
+            logKey: "default",
+            index,
+          })) ?? [];
         if (next.length > 0) {
           for (const entry of next) {
             const event = `data: ${JSON.stringify(entry)}\n\n`;
@@ -47,21 +51,18 @@ export async function GET(req: Request) {
         }
 
         // If logs were cleared, emit a `clear` event so clients can reset
-        // const newVersion =
-        //   getGlobal<number>(GLOBAL_LOGS_KEYS.LOGS_VERSION) ?? 0;
-        // if (newVersion > lastVersion) {
-        //   const event = `event: clear\ndata: ${JSON.stringify({
-        //     version: newVersion,
-        //   })}\n\n`;
-        //   controller.enqueue(new TextEncoder().encode(event));
-        //   lastVersion = newVersion;
-        // reset index after a clear so we don't rely on previous indices
-        //   index = 0;
+        const newVersion = (db.get("logsVersion") as number | undefined) ?? 0;
+        if (newVersion > lastVersion) {
+          const event = `event: clear\ndata: ${JSON.stringify({
+            version: newVersion,
+          })}\n\n`;
+          controller.enqueue(new TextEncoder().encode(event));
+          lastVersion = newVersion;
+          // reset index after a clear so we don't rely on previous indices
+          index = 0;
+        }
       }
-
-      // Wait for a bit before checking for more logs
     },
-    // },
   });
 
   return new Response(stream, {

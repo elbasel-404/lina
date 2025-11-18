@@ -1,6 +1,6 @@
-"use server";
+// "use server";
 import { db } from "@db";
 
-export const getDbKeys = async () => {
+export const getDbKeys = () => {
   return Array.from(db.keys());
 };

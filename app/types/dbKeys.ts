@@ -1,7 +1,7 @@
 import z from "zod";
 
 export const logKeys = ["default", "dbValidationErrors", "unknown"] as const;
-export const globalKeys = ["userName"] as const;
+export const globalKeys = ["userName", "logsVersion"] as const;
 
 export const logKeysSchema = z.enum(logKeys);
 export const globalKeysSchema = z.enum(globalKeys);

@@ -1,4 +1,4 @@
-"use server";
+// "use server";
 
 import { nanoid } from "nanoid";
 import { set } from "@db";
@@ -11,7 +11,7 @@ type LogParams = {
 };
 
 export async function log({ logKey, text }: LogParams) {
-  const logs = await getLogs({ logKey });
+  const logs = getLogs({ logKey });
   const entry = {
     id: nanoid(),
     key: logKey,
@@ -21,9 +21,9 @@ export async function log({ logKey, text }: LogParams) {
 
   if (logs) {
     logs.push(entry);
-    await set(logKey, logs);
+    set(logKey, logs);
   } else {
-    await set(logKey, [entry]);
+    set(logKey, [entry]);
   }
   return entry;
 }
