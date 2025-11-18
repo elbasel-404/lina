@@ -50,8 +50,7 @@ export async function GET(req: Request) {
               break;
             }
 
-            const next =
-              (await getDataSince({ key, index })) ?? [];
+            const next = (await getDataSince({ key, index })) ?? [];
             if (next.length > 0) {
               for (const entry of next) {
                 const event = `data: ${JSON.stringify(entry)}\n\n`;
