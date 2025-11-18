@@ -3,11 +3,11 @@ import { get } from "./get";
 import { getDbKeys } from "./getDbKeys";
 
 export const getAllData = () => {
-  const allData: DBEntry[] = [];
+  const allData = {} as Record<string, DBEntry>;
   const dbKeys = getDbKeys();
   dbKeys.forEach((key) => {
     const entry = get<any>({ key });
-    allData.push(entry);
+    allData[key] = entry;
   });
   return allData;
 };
