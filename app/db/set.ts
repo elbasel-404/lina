@@ -1,10 +1,10 @@
 "use server";
 
 import { updateTag } from "next/cache";
-import { DBKey } from "./keys";
-import { db } from ".";
+import { db } from "@db";
+import { DBKey } from "@types";
 
 export const set = async <T>(key: DBKey, value: T) => {
   db.set(key, value);
-  updateTag(`db:${key}`);
+  updateTag(key);
 };

@@ -1,15 +1,20 @@
 "use client";
 
 import { type FormEvent, useTransition } from "react";
-import { clearLogs } from "../server/log";
+import type { LogKey } from "@types";
+import { clearLogs } from "@server";
 
-export const ClearLogs = () => {
+interface ClearLogsProps {
+  logKey: LogKey;
+}
+
+export const ClearLogs = ({ logKey }: ClearLogsProps) => {
   const [isPending, startTransition] = useTransition();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     startTransition(async () => {
-      void clearLogs();
+      void clearLogs({ logKey });
     });
   };
 

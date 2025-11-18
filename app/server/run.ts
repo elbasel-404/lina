@@ -1,13 +1,23 @@
 "use server";
 
-import { log } from "./log";
+import { log } from "@server";
+import { sleep } from "@util";
 
 export const run = async () => {
-  log("Server action started");
-  await new Promise((r) => setTimeout(r, 2000));
+  await log({
+    logKey: "default",
+    text: "Server run started",
+  });
+  await sleep(2000);
 
-  log("Server action in progress");
+  await log({
+    logKey: "default",
+    text: "Server run completed",
+  });
 
-  await new Promise((r) => setTimeout(r, 2000));
-  log("Server action finished");
+  await sleep(2000);
+  await log({
+    logKey: "default",
+    text: "Server run finalized",
+  });
 };

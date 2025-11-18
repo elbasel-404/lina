@@ -19,7 +19,13 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@db": ["./app/db"],
+      "@server": ["./app/server"],
+      "@lib": ["./app/lib"],
+      "@components": ["./app/components"],
+      "@styles": ["./app/styles"],
+      "@util": ["./app/util"],
+      "@types": ["./app/types"]
     }
   },
   "include": [

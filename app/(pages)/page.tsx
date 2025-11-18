@@ -7,7 +7,7 @@ const HomePage = () => {
   return (
     <main>
       <Run />
-      <ClearLogs />
+      <ClearLogs logKey="default" />
       <Log />
     </main>
   );

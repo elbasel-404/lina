@@ -1,5 +1,5 @@
-import { get } from "../db/revalidation/get";
-import { DBKey } from "../db/revalidation/keys";
+import { get } from "@db";
+import { DBKey } from "@types";
 
 interface GetProps {
   dbKey: DBKey;
@@ -7,7 +7,7 @@ interface GetProps {
 }
 
 export const Get = async ({ dbKey, label }: GetProps) => {
-  const value = await get<string>(dbKey);
+  const value = await get<string>({ key: dbKey });
   return (
     <>
       {label}

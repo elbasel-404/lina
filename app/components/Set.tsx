@@ -1,6 +1,5 @@
 import { type ReactNode } from "react";
-import { set } from "@/app/db/revalidation/set";
-import { KEYS } from "../db/revalidation/keys";
+import { validateKey, set } from "@db";
 
 interface SetProps {
   children?: ReactNode;
@@ -13,8 +12,8 @@ export const Set = ({ children }: SetProps) => {
     });
 
     for (const [formKey, formValue] of formEntries) {
-      const validatedKey = KEYS.parse(formKey);
-      await set(validatedKey, formValue);
+      const { data } = validateKey(formKey);
+      await set(data, formValue);
     }
   };
 
