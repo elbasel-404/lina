@@ -85,10 +85,23 @@ export async function GET(req: Request) {
   return new Response(stream, {
     headers: {
       "Content-Type": "text/event-stream",
-      "Cache-Control": "no-cache",
+      // Prevent intermediate proxies from transforming or buffering the
+      // response body. On some CDNs setting `no-transform` helps keep
+      // the stream from being buffered and ensures SSE arrives in time.
+      "Cache-Control": "no-cache, no-transform",
       Connection: "keep-alive",
       // if you're running behind nginx you may want to set 'X-Accel-Buffering': 'no'
       "X-Accel-Buffering": "no",
+      // If a client is on a different origin, allow basic cross-origin
+      // access for testing. In production consider limiting this to
+      // your app domain instead of '*' for security.
+      "Access-Control-Allow-Origin": "*",
     },
   });
 }
+
+// Use the Edge runtime for long-lived server-sent events
+// Vercel serverless (Node) functions often buffer responses and are not
+// suitable for long-lived SSE connections. The Edge runtime supports
+// streaming responses and is what we want for an SSE endpoint.
+export const runtime = "edge";

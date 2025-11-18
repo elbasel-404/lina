@@ -20,9 +20,10 @@ export function RealtimeData<T>({
   useEffect(() => {
     // open an EventSource for the requested key (generic `key` param)
     const key = dataKey;
-    const url = `https://lina-phi.vercel.app/api/logs?key=${encodeURIComponent(
-      key
-    )}`;
+    // use a relative URL so the same code works in local dev and deployed
+    // environments (avoids forced cross-origin requests that can be blocked
+    // or alter session/cors behavior).
+    const url = `/api/logs?key=${encodeURIComponent(key)}`;
     const src = new EventSource(url);
     esRef.current = src;
 
