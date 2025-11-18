@@ -11,10 +11,10 @@ interface ClearLogsProps {
 export const ClearLogs = ({ logKey }: ClearLogsProps) => {
   const [isPending, startTransition] = useTransition();
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    startTransition(async () => {
-      void clearLogs({ logKey });
+    startTransition(() => {
+      clearLogs({ logKey });
     });
   };
 
