@@ -10,7 +10,7 @@ export function Log() {
 
   useEffect(() => {
     // Connect to server-sent events
-    const src = new EventSource(`/api/logs/sse`);
+    const src = new EventSource(`/api/logs`);
     esRef.current = src;
 
     src.onmessage = (e) => {
@@ -28,9 +28,9 @@ export function Log() {
     };
 
     // listen for the special "clear" event so we can empty local state
-    src.addEventListener("clear", () => {
-      setEntries([]);
-    });
+    // src.addEventListener("clear", () => {
+    //   setEntries([]);
+    // });
 
     return () => {
       src.close();

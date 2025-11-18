@@ -12,7 +12,7 @@ export const Set = ({ children }: SetProps) => {
     });
 
     for (const [formKey, formValue] of formEntries) {
-      const { data } = validateKey(formKey);
+      const { data } = await validateKey(formKey);
       await set(data, formValue);
     }
   };

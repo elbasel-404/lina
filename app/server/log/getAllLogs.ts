@@ -1,3 +1,4 @@
+"use server";
 import { type LogEntry, logKeys } from "@types";
 import { getLogs } from ".";
 

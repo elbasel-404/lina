@@ -1,8 +1,9 @@
+"use server";
 import { formatError } from "zod";
 import { log } from "@server";
 import { DBKey, dbKeysSchema } from "@types";
 
-export const validateKey = (key: string) => {
+export const validateKey = async (key: string) => {
   const { data, success, error } = dbKeysSchema.safeParse(key);
   if (!success) {
     const formattedError = formatError(error);
