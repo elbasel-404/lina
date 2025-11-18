@@ -1,5 +1,5 @@
-import { get } from "../get";
-import { getDbKeys } from "../getDbKeys";
+import { get } from "./get";
+import { getDbKeys } from "./getDbKeys";
 
 type DbEntry = {
   key: string;

@@ -6,8 +6,6 @@ import type { DBKey } from "@types";
 interface RealtimeDataProps<T = unknown> {
   dataKey: DBKey;
   maxEntries?: number;
-  className?: string;
-  // render an item received from the EventSource stream
   renderEntry: (entry: T) => ReactNode;
 }
 
@@ -64,11 +62,6 @@ export function RealtimeData<T>({
       esRef.current = null;
     };
   }, [dataKey, maxEntries]);
-
-  // entries defaults to an empty array; only render placeholder if not defined
-  if (!entries) {
-    return <>No logs yet</>;
-  }
 
   return (
     <>
