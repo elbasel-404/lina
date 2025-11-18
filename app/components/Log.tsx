@@ -13,6 +13,11 @@ export function Log() {
     const src = new EventSource(`/api/logs`);
     esRef.current = src;
 
+    src.onopen = () => {
+      // debug connection state
+      console.debug("SSE connected to /api/logs");
+    };
+
     src.onmessage = (e) => {
       try {
         const data = JSON.parse(e.data) as Entry;
@@ -26,6 +31,11 @@ export function Log() {
       // attempt to reconnect after a short delay
       // EventSource automatically reconnects, so we just leave it
     };
+
+    // listen for the special "clear" event so we can empty local state
+    src.addEventListener("clear", () => {
+      setEntries([]);
+    });
 
     // listen for the special "clear" event so we can empty local state
     // src.addEventListener("clear", () => {

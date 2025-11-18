@@ -1,27 +1,49 @@
 import { getLogsSince } from "@server";
+import { sleep } from "@util";
 
 export async function GET(req: Request) {
   const url = new URL(req.url);
   const since = Number(url.searchParams.get("since") ?? 0);
 
   const stream = new ReadableStream({
+    start(controller) {
+      // Send an initial comment to flush any proxy/HTTP buffers so clients
+      // start receiving events immediately.
+      controller.enqueue(new TextEncoder().encode(`: connected\n\n`));
+    },
     async pull(controller) {
       let index = since;
+      // If the client disconnects, stop the loop so we don't keep busy-waiting.
+      const signal = (req as unknown as { signal?: AbortSignal }).signal;
       // Read the current logs version from a central global helper
       //   let lastVersion = getGlobal<number>(GLOBAL_LOGS_KEYS.LOGS_VERSION) ?? 0;
 
       while (true) {
-        const next = await getLogsSince({
+        if (signal?.aborted) {
+          try {
+            controller.close();
+          } catch (_) {
+            // ignore
+          }
+          break;
+        }
+        const next = (await getLogsSince({
           logKey: "default",
           index,
-        });
+        })) ?? [];
         if (next.length > 0) {
           for (const entry of next) {
             const event = `data: ${JSON.stringify(entry)}\n\n`;
             controller.enqueue(new TextEncoder().encode(event));
             index++;
           }
-          // await new Promise((r) => setTimeout(r, 150));
+          // Give the server a tiny break after sending a batch so we don't starve
+          // other requests. This also reduces CPU usage in dev when there are
+          // no logs to stream.
+          await sleep(50);
+        } else {
+          // No new logs — wait a short time before polling again.
+          await sleep(150);
         }
 
         // If logs were cleared, emit a `clear` event so clients can reset
@@ -43,6 +65,12 @@ export async function GET(req: Request) {
   });
 
   return new Response(stream, {
-    headers: { "Content-Type": "text/event-stream" },
+    headers: {
+      "Content-Type": "text/event-stream",
+      "Cache-Control": "no-cache",
+      Connection: "keep-alive",
+      // if you're running behind nginx you may want to set 'X-Accel-Buffering': 'no'
+      "X-Accel-Buffering": "no",
+    },
   });
 }

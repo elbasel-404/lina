@@ -6,8 +6,8 @@ const HomePage = () => {
   return (
     <main>
       <Run />
-      {/* <ClearLogs logKey="default" /> */}
-      {/* <Log /> */}
+      <ClearLogs logKey="default" />
+      <Log />
     </main>
   );
 };
