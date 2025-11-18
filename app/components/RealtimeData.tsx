@@ -1,13 +1,14 @@
 "use client";
 
 import { ReactNode, useEffect, useRef, useState } from "react";
-import type { DBKey, DBEntry } from "@types";
+import type { DBKey } from "@types";
 
 interface RealtimeDataProps<T = unknown> {
   dataKey: DBKey;
   maxEntries?: number;
   className?: string;
-  renderEntry: (entry: DBEntry<T>) => ReactNode;
+  // render an item received from the EventSource stream
+  renderEntry: (entry: T) => ReactNode;
 }
 
 export function RealtimeData<T>({
@@ -15,7 +16,7 @@ export function RealtimeData<T>({
   maxEntries = 200,
   renderEntry,
 }: RealtimeDataProps<T>) {
-  const [entries, setEntries] = useState<DBEntry<T>[]>([]);
+  const [entries, setEntries] = useState<T[]>([]);
   const esRef = useRef<EventSource | null>(null);
 
   useEffect(() => {
@@ -29,7 +30,8 @@ export function RealtimeData<T>({
 
     src.onmessage = (e) => {
       try {
-        const data = JSON.parse(e.data) as DBEntry<T>;
+        // the server streams the raw item stored under `dataKey`; cast to T
+        const data = JSON.parse(e.data) as T;
         setEntries((prev) => {
           const next = [...prev, data];
           if (maxEntries && next.length > maxEntries) {
@@ -63,7 +65,8 @@ export function RealtimeData<T>({
     };
   }, [dataKey, maxEntries]);
 
-  if (entries.length === 0) {
+  // entries defaults to an empty array; only render placeholder if not defined
+  if (!entries) {
     return <>No logs yet</>;
   }
 

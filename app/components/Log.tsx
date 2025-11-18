@@ -10,15 +10,14 @@ interface LogProps {
 
 export function Log({ logKey = "defaultLog", maxEntries = 200 }: LogProps) {
   return (
-    <RealtimeData<LogEntry[]>
+    <RealtimeData<LogEntry>
       dataKey={logKey}
       maxEntries={maxEntries}
-      renderEntry={({ data }) => {
+      renderEntry={(entry) => {
         return (
-          <div>
-            {data.map(({ text, id }) => {
-              return <span>{text}</span>;
-            })}
+          <div key={entry.id}>
+            {entry.timestamp.slice(11, 16)}
+            <div>{entry.text}</div>
           </div>
         );
       }}
