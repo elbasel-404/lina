@@ -11,9 +11,12 @@ export async function clearLogs({ logKey }: ClearLogsParams) {
   // clear the logs array for the given key
   set(logKey, []);
 
-  // bump the global logsVersion key so EventSource streams can detect a
-  // clear and emit the `clear` event. This makes the client-side `Log`
-  // component receive the event and reset its local state.
-  const current = (get<number>({ key: "logsVersion" }) ?? 0) + 1;
-  set("logsVersion", current);
+  // bump a per-key version so EventSource streams can detect a clear and
+  // emit the `clear` event for only that data key. This keeps other feeds
+  // from being reset when unrelated keys are cleared.
+  // bump a per-key version. This makes per-key SSE subscriptions clear
+  // only that key's feeds and not every active feed.
+  const versionKey = `${logKey}:version`;
+  const current = (get<number>({ key: versionKey as any }) ?? 0) + 1;
+  set(versionKey as any, current);
 }

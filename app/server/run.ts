@@ -5,19 +5,19 @@ import { sleep } from "@util";
 
 export const run = async () => {
   await log({
-    logKey: "default",
+    logKey: "defaultLog",
     text: "Server run started",
   });
   await sleep(2000);
 
   await log({
-    logKey: "default",
+    logKey: "defaultLog",
     text: "Server run completed",
   });
 
   await sleep(2000);
   await log({
-    logKey: "default",
+    logKey: "defaultLog",
     text: "Server run finalized",
   });
 };

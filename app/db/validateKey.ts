@@ -8,7 +8,7 @@ export const validateKey = async (key: string) => {
   if (!success) {
     const formattedError = formatError(error);
     log({
-      logKey: "dbValidationErrors",
+      logKey: "logKeyValidationError",
       text: `Invalid DB key attempted: ${key} - Errors: ${JSON.stringify(
         formattedError
       )}`,

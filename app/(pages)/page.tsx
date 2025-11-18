@@ -6,8 +6,11 @@ const HomePage = () => {
   return (
     <main>
       <Run />
-      <ClearLogs logKey="default" />
-      <Log />
+      <ClearLogs logKey="defaultLog" />
+      {/* default log view — wrapped by RealtimeData under the hood */}
+      <Log logKey="defaultLog" />
+      {/* Example: show a different log channel (dbValidationErrors) */}
+      {/* <RealtimeData logKey="dbValidationErrors" /> */}
     </main>
   );
 };

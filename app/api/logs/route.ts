@@ -1,10 +1,18 @@
-import { getLogsSince } from "@server";
+import { getDataSince } from "@server";
+import type { DBKey } from "@types";
 import { db } from "@db";
 import { sleep } from "@util";
+// DBKey type is imported above for use when reading the `key` query param.
 
 export async function GET(req: Request) {
   const url = new URL(req.url);
   const since = Number(url.searchParams.get("since") ?? 0);
+  // Allow clients to subscribe to a specific log key (default to 'default')
+  // Allow clients to subscribe to a specific data key (default to 'default')
+  // The `key` parameter maps to a DB key and lets the SSE endpoint stream
+  // any array stored in the DB under that key.
+  const keyParam = (url.searchParams.get("key") ?? "default") as string;
+  const key = keyParam as DBKey;
 
   const stream = new ReadableStream({
     start(controller) {
@@ -19,7 +27,8 @@ export async function GET(req: Request) {
       // Read the current logs version from a central global helper
       //   let lastVersion = getGlobal<number>(GLOBAL_LOGS_KEYS.LOGS_VERSION) ?? 0;
 
-      let lastVersion = (db.get("logsVersion") as number | undefined) ?? 0;
+      const versionKey = `${key}:version`;
+      let lastVersion = (db.get(versionKey as any) as number | undefined) ?? 0;
 
       while (true) {
         if (signal?.aborted) {
@@ -31,8 +40,8 @@ export async function GET(req: Request) {
           break;
         }
         const next =
-          (await getLogsSince({
-            logKey: "default",
+          (await getDataSince({
+            key,
             index,
           })) ?? [];
         if (next.length > 0) {
@@ -51,10 +60,17 @@ export async function GET(req: Request) {
         }
 
         // If logs were cleared, emit a `clear` event so clients can reset
-        const newVersion = (db.get("logsVersion") as number | undefined) ?? 0;
+        // If the data at `key` was cleared, emit a `clear` event with `key`
+        // so clients can selectively reset only feeds they care about.
+        const versionKey = `${key}:version`;
+        const newVersion =
+          (db.get(versionKey as any) as number | undefined) ?? 0;
         if (newVersion > lastVersion) {
+          // include the cleared log key so clients can ignore clears for other
+          // keys when they're subscribed to a different channel
           const event = `event: clear\ndata: ${JSON.stringify({
             version: newVersion,
+            key,
           })}\n\n`;
           controller.enqueue(new TextEncoder().encode(event));
           lastVersion = newVersion;
